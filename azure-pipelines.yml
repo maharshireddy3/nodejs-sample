@@ -22,10 +22,17 @@ steps:
     deployToSlotOrASE: true
     resourceGroupName: 'Workdemo'
     slotName: 'production'
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    package: '$(Build.ArtifactStagingDirectory)'
     deploymentMethod: 'auto'
 
 - script: |
     npm install
     npm run build
   displayName: 'npm install and build'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    pathtoPublish: $(Build.ArtifactStagingDirectory)
+    artifactName: drop
+
